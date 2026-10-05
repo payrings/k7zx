@@ -219,7 +219,7 @@ def main():
     check(f"{len(speeds)} technique arms cover at least 14 techniques", len(speeds) >= 13)
 
     # ---- the mp3 bit rate is fixed, and the label must say so ---------------
-    # The constant moved to the core in step 17, when the mp3 plumbing became
+    # The constant moved to the core when the mp3 plumbing became
     # shared between the GUI and k7zx-cli instead of living in the GUI alone.
     src = read("src/core/mp3.h")
     m = re.search(r"kMp3Bitrate = (\d+);", src)
@@ -282,7 +282,7 @@ def main():
     else:
         print("  skip  option check (build/k7zx-cli not built)")
 
-    # ---- invariants introduced by the step 17 review ----
+    # ---- invariants introduced by the review ----
     # Each of these was a real bug; they are cheap to re-check and expensive to
     # regress, so they are asserted here rather than left to a code reading.
 

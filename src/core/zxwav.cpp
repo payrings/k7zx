@@ -1288,7 +1288,7 @@ void AudioWriter::encodeBlock(const std::uint8_t* data, unsigned startAddress, u
         case kManchesterDif: encodeManchesterDif(data, startAddress, length); break;
         case kEscurrido: encodeEscurrido(data, startAddress, length); break;
         // kRayo renders through its own signal builder, not this switch, and
-        // Methods 13-19 were removed in step 15.  encodeEscurrido is the
+        // Methods 13-19 were removed.  encodeEscurrido is the
         // slowest remaining encoder, so it is the safe last resort.
         default: encodeEscurrido(data, startAddress, length); break;
     }

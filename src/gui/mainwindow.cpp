@@ -309,8 +309,8 @@ std::shared_ptr<PokeColumns> pokeCols() {
 }  // namespace
 
 /// The high-speed technique list is not a contiguous enum range -- values
-/// 13-19 were removed in step 15 and Rayo, added by this port, sits at 20 --
-/// so row <-> method conversion goes through Settings.
+/// 13-19 belonged to the techniques this port removed and Rayo, added here,
+/// sits at 20 -- so row <-> method conversion goes through Settings.
 static int turboRow(Method m) {
       const int i = Settings::turboIndex(m);
       return i < 0 ? 0 : i;
@@ -1993,8 +1993,8 @@ int MainWindow::runSelfTest(const std::string& path) {
             pump();
         }
 
-        // And switching mode must refresh the other one.  Two modes survive
-        // step 15, so the check reads one, switches to the other, and compares.
+        // And switching mode must refresh the other one.  Two modes survive,
+        // so the check reads one, switches to the other, and compares.
         modeCombo_.set_active(kConvertNormal);
         onSettingsChanged();
         const std::string normal = textOf(modeInfoText_);

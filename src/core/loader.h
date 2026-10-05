@@ -66,7 +66,7 @@ struct CodeSizes {
     static constexpr std::size_t machester = 159;
     static constexpr std::size_t mandif = 159;
     static constexpr std::size_t escurridofast = 186;
-    // The low-rate techniques and Veloz were removed in step 15; no sizes
+    // The low-rate techniques and Veloz were removed; no sizes
     // remain for the reserved Method values 13-19.
 
     static constexpr std::size_t rom_mini = 116;

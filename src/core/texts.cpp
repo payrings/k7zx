@@ -13,7 +13,7 @@ namespace {
 // The original's `tecnica[]`, verbatim -- this is the list shown in the
 // options dialog's "Encoding technic" combo.  The trailing "?" is the
 // placeholder it used for the combo's unused tail.
-// Slots 13-19 were the low-rate techniques and Veloz, removed in step 15; the
+// Slots 13-19 were the low-rate techniques and Veloz, both removed; the
 // values are reserved so a saved `Ops.Method` cannot drift onto another
 // technique.  They render as the "?" the original used for its unused tail.
 const char* const kMethodNames[kMethodCount + 1] = {
@@ -29,7 +29,7 @@ const char* const kMethodNames[kMethodCount + 1] = {
 // here, so both spellings are kept rather than normalised away.
 // Indexed by Settings::turboIndex(), NOT by the raw Method value: the enum is
 // not contiguous across the high-speed techniques -- Rayo, added by this port,
-// sits after the gap left by the techniques removed in step 15 -- so indexing by
+// sits after the gap left by the removed techniques -- so indexing by
 // Method would run off the end.
 static const char* const kMethodCaptions[] = {
     "ROM",             "Milks",         "FSK",             "Shavings Slow",
@@ -134,7 +134,7 @@ constexpr const char* c_rayo =
     "48K snapshots and tapes.";
 
 // Slots 13-18 were the low-rate techniques and 19 was Veloz; both removed in
-// step 15, so they fall back to t_none.
+// port, so they fall back to t_none.
 const char* const kExplanations[kMethodCount] = {
     t_rom,   t_milks, t_fsk,     t_slow,       t_delta,       t_raudo,
     t_ultra, t_npu,  t_fi,      t_fiq,        t_manchester,  t_man_dif,
@@ -160,7 +160,7 @@ constexpr const char* c_hi =
     " be fixed manually. Up to 7 blocks can be loaded with  \"many blocks\" option)";
 
 
-// Mode 2 was the low-rate "Ma non troppo" mode, removed in step 15.  The slot
+// Mode 2 was the low-rate "Ma non troppo" mode, removed.  The slot
 // is kept so the array stays indexed by ConversionMode; the removed blurb reads
 // as the normal-mode one, which is what an out-of-range mode falls back to.
 const char* const kConversionModes[kConvertModeCount] = {c_normal, c_hi, c_normal};

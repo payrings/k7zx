@@ -19,8 +19,7 @@ namespace {
 //     R ~= preset + kC0 + kSlope * T_cycle.
 // kC0 was measured in tools/zxload with exact edges and then shifted so the
 // windows sit between 48K (3.5 MHz) and 128K (3.5469 MHz) timing; with it no
-// symbol errors were seen at either through the playback-chain model (README,
-// step 14).
+// symbol errors were seen at either through the playback-chain model.
 constexpr double kCpu = 3500000.0;
 constexpr double kSlope = 3.0 / 16.0;
 constexpr double kC0 = -19.0;

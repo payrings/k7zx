@@ -31,6 +31,7 @@ pick a technique, and per-speed reliability ratings.
 - [Using the GUI](#using-the-gui)
 - [Choosing a technique](#choosing-a-technique)
 - [How the output works](#how-the-output-works)
+- [The Rayo loader](#the-rayo-loader)
 - [Reliability](#reliability)
 - [Fidelity to k7zx 4.3](#fidelity-to-k7zx-43)
 - [Known limits](#known-limits)
@@ -74,11 +75,12 @@ Escurrido
 
 This port adds a fourteenth:
 
-* **Rayo** — designed for this port. Runs at 2.25 and 2.75 samples per bit,
-  adds an end-of-tape check so a corrupt load stops with an error instead of
-  running, auto-detects polarity, tolerates a held key, and can LZ-compress the
-  payload, which makes a typical game's whole load about 30 % shorter. [Details in
-  GUIDE.md](GUIDE.md#6-choosing-a-technique).
+* **Rayo** — designed for this port, and the only one of the fourteen that
+  compresses the data. Runs at 2.25 and 2.75 samples per bit, adds an
+  end-of-tape check so a corrupt load stops with an error instead of running,
+  auto-detects polarity, and tolerates a key held during loading. Compression
+  makes a typical game's whole load about 30 % shorter. **See
+  [The Rayo loader](#the-rayo-loader)**.
 
 **For MP3 output, streaming or a cassette recording, use FSK at 5.00–7.00
 samples per bit** (`-t fsk -s 5.00`). Those are the FSK speeds measured clean
@@ -240,6 +242,116 @@ tuned to each other — which is why a technique is selected as a unit.
 Rayo takes a different route. It builds its own loader rather than patching one,
 drives the tape through explicit half-cycle timings, and expands the payload in
 place so the compressed form can be stored immediately above the decompressor.
+
+---
+
+## The Rayo loader
+
+Rayo is the one addition to k7zx 4.3's thirteen techniques, and it is the only
+one that **compresses the data**. It runs at two speeds — 2.25 (21,333 bps) and
+2.75 (17,454 bps) at 48 kHz — and shares Raudo's signal family: two bits per
+wave cycle, with the cycle length chosen from four possibilities.
+
+### What compression does and does not do
+
+It is worth being precise, because the effect is easy to overstate. Compression
+does **not** raise the bit rate. Rayo still sends 2 bits per cycle at the same
+speeds. What it changes is *how much* there is to send: a typical 48K game's
+compressed form is about two-thirds the size, so the tape carries fewer bits and
+the load finishes sooner. It is a smaller download, not a faster modem.
+
+That still matters. A game that does not fit comfortably at 21,333 bps
+uncompressed can finish in about the time NPU 1.25 takes uncompressed — but only
+if the game compresses well, and the loader shows no loading screen while it
+happens (see below).
+
+### The compressed format
+
+An LZ77 variant with interlaced Elias gamma codes, written MSB first. The bit
+buffer is pulled from the byte stream as each bit is needed, so bits and bytes
+interleave freely.
+
+```
+stream   := literal { token } end
+literal  := gamma(n) <n bytes>                          n >= 1
+after a literal:  0 -> repmatch,  1 -> newmatch
+after a match:    0 -> literal,   1 -> newmatch
+repmatch := gamma(n)                copy n bytes from the previous offset
+newmatch := gamma(hi+1) <lo> gamma(n-1)   offset = hi*256 + lo + 1, n >= 2
+end      := 1 gamma(256)
+```
+
+Two things keep it compact. A **repmatch** repeats the offset already in use —
+which is what happens constantly in a program's memory, where the same jump
+table or the same data pattern recurs a few hundred bytes apart — and costs
+nothing but a length code. A **newmatch** costs a length, a high byte and a low
+byte, giving a 16-bit offset.
+
+The compressor is not greedy. It builds, for every position, the cheapest
+parse by dynamic programming over the cost of ending on a literal run versus
+ending on a match, then backtracks the cheapest path.
+
+### Expanding in place, with no spare memory
+
+This is the part that makes it work on a 48K Spectrum at all.
+
+A decompressor cannot overwrite the compressed data it is still reading. The
+usual answers are a second buffer — which a Spectrum does not have to spare —
+or a two-pass scheme that costs time. Rayo uses neither.
+
+The compressed stream is placed **immediately above** the region it will expand
+into, and the write pointer trails the read pointer:
+
+```
+   uncompressed:   [ dst ...................... dst+N ]
+   compressed:                            [ dst+N+d-C ... dst+N+d )
+```
+
+The decompressor runs with `HL` (read) at the start of the compressed data and
+`DE` (write) at `dst`. Each output byte advances `DE` by one; the input advances
+by zero or more. `DE` chases `HL` but never catches it, so it never overwrites
+input it has not read — provided the gap `d` was large enough. The whole
+decompressor is **76 bytes** of Z80 (`$FD54`–`$FDA0`), and it runs once, after
+the tape has finished.
+
+`d` is not guessed. Before writing the tape the converter runs the reference
+decompressor on the machine, recording for every output byte how many input
+bytes had been consumed by then, and takes the largest difference. It also
+decompresses the result and compares it byte for byte against the original.
+
+If any of three things is wrong, the tape is written **uncompressed** and the
+conversion log says which one it was:
+
+- the round trip did not reproduce the data, so compression is not trustworthy;
+- the data does not actually get smaller (random or already-packed data will
+  not);
+- the compressed stream would not fit between the end of the expanded data and
+  the decompressor. That gap is small — the whole payload has to end below
+  `$FD40` (`64832`), where the loader itself begins.
+
+Nothing is lost by declining: the load works, it is just not shorter.
+
+### What else Rayo adds
+
+Compression is one of six differences from Raudo:
+
+| | |
+|---|---|
+| **End-of-tape check and checksum** | A load that would run corrupt stops with a tape error instead. Raudo has neither. |
+| **Polarity learnt from the sync** | An inverted signal loads. |
+| **Port read as `$FFFE`** | A key held down during loading does no harm. |
+| **Per-tape symbol mapping** | The 2-bit values are assigned to cycle lengths by frequency, so the commonest value gets the shortest cycle. Raudo uses a fixed order. |
+| **Compression** | Above. |
+| **Explicit cycle timings** | Pulses are timed half by half, which a DAC's reconstruction filter reproduces more faithfully. |
+
+### The one real cost
+
+**With compression on, the loading screen does not appear while the data
+loads.** The compressed data is held high in memory and expanded into place in a
+single final pass, so the screen is written all at once at the end rather than
+being drawn progressively. Turn compression off (`--no-compress`, or the *Compress
+(Rayo)* checkbox) to watch it fill in. For a game with a loading screen that
+tells you something, that is the trade.
 
 ---
 

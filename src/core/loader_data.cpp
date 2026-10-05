@@ -512,7 +512,7 @@ static_assert(sizeof(multi_128) == CodeSizes::multi_128);
 
 // Lookup tables.  `codes` is indexed by Method, `codes_extra` by ExtraRoutine.
 // ---------------------------------------------------------------------------
-// Slots 13-19 are the techniques removed in step 15; the values are reserved
+// Slots 13-19 are techniques this port removed; the values are reserved
 // (see defs.h) so a saved `Ops.Method` cannot drift, and they hold placeholders.
 const std::uint8_t* const codes[kMethodCount] = {
     rom,     milks,  fsk,    slow_table, delta,  raudo, ultra,

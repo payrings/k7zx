@@ -18,7 +18,7 @@ std::size_t codeSize(Method m) { return CodeSizes::primary(m); }
 
 TEST("every method has a distinct, non-trivial loader") {
     // Over the surviving techniques only: Method values 13-19 were removed in
-    // step 15 and keep their slots as reserved placeholders, so the raw enum
+    // port and keep their slots as reserved placeholders, so the raw enum
     // range is no longer the set of techniques.
     for (Method method : Settings::turboMethods()) {
         if (method == kRayo) continue;  // builds its own loader (rayo.cpp)
@@ -224,10 +224,10 @@ TEST("legacy Ops.MetodoHI restores the high-speed technique") {
 }
 
 TEST("legacy Ops.Mode 2 loads as high speed with FSK at 5.00") {
-    // Mode 2 was the low-rate "Ma non troppo" mode, removed in step 15. An old
+    // Mode 2 was the low-rate "Ma non troppo" mode, removed from this port. An old
     // config that still names it must load as high speed with the replacement
     // the removal notes recommend, not crash and not go quiet.  5.00 is one of
-    // the FSK speeds that survives every analogue channel condition (step 16).
+    // the FSK speeds that survives every analogue channel condition (see the guide's ratings).
     const Settings s = loadFrom("[Ops]\r\nMode=2\r\n");
     CHECK_EQ(s.conversionMode, static_cast<int>(kConvertHiSpeed));
     CHECK_EQ(s.method, static_cast<int>(kFsk));
@@ -250,7 +250,7 @@ TEST("an out-of-range Ops.Mode loads as high speed with FSK at 5.00") {
 }
 
 TEST("Ops.Method 13-19 fall back to the default high-speed technique") {
-    // 13-18 were the low-rate techniques, 19 was Veloz; all removed in step 15.
+    // 13-18 were the low-rate techniques, 19 was Veloz; all removed from this port.
     for (int v = 13; v <= 19; ++v) {
         const std::string body = "[Ops]\r\nMethod=" + std::to_string(v) + "\r\n";
         const Settings s = loadFrom(body.c_str());
@@ -323,7 +323,7 @@ TEST("INI keys and section names are read whatever their case") {
 
 // --- the high-speed technique list ------------------------------------------
 // The Method enum is not contiguous across the high-speed techniques: values
-// 13-19 were removed in step 15 and Rayo sits at 20. The list is therefore
+// 13-19 were removed from this port and Rayo sits at 20. The list is therefore
 // maintained explicitly in Settings::turboMethods(), and every accessor that
 // indexes an array by the raw Method has to be checked against that.
 
@@ -341,7 +341,7 @@ TEST("the bit-rate keys are not written, because the rate is fixed") {
 }
 
 TEST("every technique has a usable name, tag, caption and explanation") {
-    // Over the surviving techniques; 13-19 are reserved (step 15) and are
+    // Over the surviving techniques; 13-19 are reserved (removed from this port) and are
     // covered by the placeholder test above.
     for (const Method M : Settings::turboMethods()) {
         CHECK(texts::methodName(M) != nullptr);

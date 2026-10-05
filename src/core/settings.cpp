@@ -46,9 +46,9 @@ bool toBool(const std::string& s, bool fallback) {
 /// A tiny INI reader/writer over std::map.
 ///
 /// Keys are folded to lower case. Windows INI keys are case-insensitive, and
-/// the original relied on that: it *read* `Files.Lame` but *wrote* `Files.lame`
-/// (README step 5), which was invisible on Windows and would silently lose the
-/// setting here. Section names are folded too, for the same reason.
+/// the original relied on that: it *read* `Files.Lame` but *wrote* `Files.lame`,
+/// which was invisible on Windows and would silently lose the setting here.
+/// Section names are folded too, for the same reason.
 class IniFile {
 public:
     explicit IniFile(const std::string& path) {
@@ -170,7 +170,7 @@ private:
 // ---------------------------------------------------------------------------
 const std::vector<Method>& Settings::turboMethods() {
     // kRom..kEscurrido are contiguous, then Rayo, which is not: 13-19 were
-    // removed in step 15.
+    // removed from this port.
     static const std::vector<Method> kList = {
         kRom,  kMilks, kFsk,  kShavingsSlow, kShavingsDelta, kShavingsRaudo, kUltra,
         kNpu,  kFi,    kFiQ,  kManchester,   kManchesterDif, kEscurrido,   kRayo};
@@ -359,7 +359,7 @@ bool loadSettings(const std::string& path, Settings& s) {
     }
     // `Ops.MusicMethod` (legacy `Ops.MetodoMA`) held the technique chosen in the
     // removed low-rate "Ma non troppo" mode.  It is ignored on read and no
-    // longer written; see README step 15.
+    // longer written.
     s.samplesPerBit = intKey("SamplesPerBit", "Muestras", s.samplesPerBit);
     s.antiKolmogorov = ini.getBool("Ops.Kolmogorov", s.antiKolmogorov);
     s.compress = ini.getBool("Ops.Compress", s.compress);
@@ -442,15 +442,16 @@ bool loadSettings(const std::string& path, Settings& s) {
         note("more than 64 pokes in the configuration; the rest were ignored\r\n");
 
     // Clamp anything nonsensical rather than propagating it into the renderer.
-    // Two ranges went away in step 15 and are migrated here so that an existing
-    // k7zx.ini keeps working.  See README step 15.
+    // Two ranges went away with the low-rate mode and are migrated here so that
+    // an existing k7zx.ini keeps working.
     //
     // `Ops.Mode` 2 was the low-rate "Ma non troppo" mode, and anything else
     // outside 0..1 is meaningless.  Both load as high speed with FSK at 5.00
     // samples per bit, the replacement the removal notes recommend.  5.00, 6.00
     // and 7.00 are the FSK speeds that load with no errors in every analogue
-    // channel condition on both machines (README step 16); 4.00 is faster but
-    // does not finish at a badly aligned threshold.
+    // channel condition on both machines (see the guide's reliability
+    // ratings); 4.00 is faster but does not finish at a badly aligned
+    // threshold.
     if (s.conversionMode != kConvertNormal && s.conversionMode != kConvertHiSpeed) {
         s.conversionMode = kConvertHiSpeed;
         s.method = kFsk;
@@ -522,7 +523,7 @@ bool saveSettings(const std::string& path, const Settings& s) {
     }
     // The old file was loaded first so that keys this port knows nothing about
     // survive a save, but that also kept every *superseded* key alive forever --
-    // MusicMethod and MetodoMA for the mode removed in step 15, and the Spanish
+    // MusicMethod and MetodoMA for the removed low-rate mode, and the Spanish
     // spellings now written in English -- which in turn kept their migration
     // paths alive after the first save.  Drop exactly those, and nothing else.
     static const char* const kSuperseded[] = {

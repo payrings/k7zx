@@ -3,7 +3,7 @@
 //
 // What these cannot show is that the Z80 code loads the signal; that is what
 // tools/zxload (an emulated 48K/128K running the real ROM and loader) and
-// tools/channel/robustness.py are for -- see the README, step 14.
+// tools/channel/robustness.py are for -- see the README.
 #include "test_harness.h"
 
 #include <algorithm>

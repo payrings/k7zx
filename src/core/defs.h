@@ -17,10 +17,10 @@ namespace k7zx {
 //
 // 13-18 were the low-rate "Ma non troppo" techniques (Andante, Allegro
 // Agitato, Vivace, Presto, Allegro Maestoso, Allegro Scherzando) and 19 was
-// Veloz; both were removed in step 15.  The values are reserved, not reused:
+// Veloz; this port removed both groups.  The values are reserved, not reused:
 // the settings file stores the technique as an integer under `Ops.Method`
 // (legacy `Ops.MetodoHI`), so renumbering would silently switch users' saved
-// choices.  See README step 15.
+// choices.
 // ---------------------------------------------------------------------------
 enum Method : int {
     kRom = 0,
@@ -93,9 +93,9 @@ enum Scheme : int {
 // Top level conversion modes offered by the original UI.
 //   0 = "normal"  : faithful tap/tzx -> wav (like tap2wav / tzx2wav)
 //   1 = "hispeed" : turbo loader -> wav, loads in seconds
-// 2 = the low-rate "Ma non troppo" mode, removed in step 15.  The value is
+// 2 = the low-rate "Ma non Troppo" mode, removed.  The value is
 //     reserved, not reused: the settings file stores it under `Ops.Mode`
-//     (legacy `Ops.Conversor`).  See README step 15.
+//     (legacy `Ops.Conversor`).
 // ---------------------------------------------------------------------------
 enum ConversionMode : int {
     kConvertNormal = 0,

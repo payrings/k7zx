@@ -115,8 +115,8 @@ bool parseMethod(const std::string& s, int& out) {
 
 /// True for the names the command line used to accept and no longer does, so
 /// that a stale script fails with advice rather than "unknown method".  The
-/// low-rate techniques and Veloz were removed in step 15; the CLI is the only
-/// place that still needs to recognise them by name.
+/// low-rate techniques and Veloz were removed from this port; the CLI is the
+/// only place that still needs to recognise them by name.
 bool isRemovedMethod(const std::string& s) {
     static const char* const kRemoved[] = {"veloz",    "andante", "agitato",      "vivace",
                                            "presto",   "maestoso", "scherzando"};

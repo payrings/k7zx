@@ -523,7 +523,7 @@ struct Golden {
     int mp3, method, spb, rate, scheme;
     unsigned long long hash;
 };
-// The first field is the removed low-rate conversion mode (step 15). The table
+// The first field is the removed low-rate conversion mode (removed from this port). The table
 // was regenerated from a freshly built tools/k7zx43 and no row carries it any
 // more; the test refuses one if it ever reappears, so the table cannot drift
 // back to comparing a mode the converter no longer has.

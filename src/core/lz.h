@@ -1,8 +1,10 @@
 // k7zx 5.0 - modern C++ port
 //
 // The LZ compression used by the Rayo loader (added by this port; not part
-// of k7zx 4.3).  The PC compresses, and a 98-byte Z80 routine in the loader
-// expands the data in place once the tape has loaded.
+// of k7zx 4.3).  The PC compresses, and a 76-byte Z80 routine in the loader
+// expands the data in place once the tape has loaded -- in place, because a
+// Spectrum has no spare buffer and the expansion has to happen over the
+// compressed data itself.  See inPlaceMargin() and README, "The Rayo loader".
 //
 // Format (bits MSB first; a bit-buffer byte is taken from the byte stream at
 // the moment its first bit is needed, so bits and bytes interleave):

@@ -12,12 +12,15 @@
 //   * the polarity is learnt from the sync, so an inverted signal loads;
 //   * the port is read as $FFFE, so a key held during loading does no harm;
 //   * the 2-bit values are mapped to cycle lengths by frequency, per tape;
-//   * optional LZ compression, expanded in place by the loader (see lz.h).
+//   * optional LZ compression, expanded in place by the loader (see lz.h);
+//   * every pulse is timed as explicit low/high half-cycles and rendered square,
+//     which a DAC's reconstruction filter reproduces more faithfully than a
+//     shaped waveform.
 //
 // The Z80 code is src/core/asm/rayo.asm; tools/rayo/build_loader.py turns it
 // into rayo_loader.inc.  The decode table and presets come from the timing
 // model below, which was measured in tools/zxload against 48K and 128K timing
-// and through a model of a real playback chain (see the README, step 14).
+// and through a model of a real playback chain.
 #ifndef K7ZX_RAYO_H
 #define K7ZX_RAYO_H
 

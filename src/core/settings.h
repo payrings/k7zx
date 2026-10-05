@@ -48,7 +48,7 @@ struct Settings {
       // No bit-rate setting: the original hard-coded 256 kbps (this port uses
       // 320; see GUIDE.md) and exposed no control at all.  Its `MPBCmbBx` combo
       // was the samples-per-bit selector, and the per-mode rates came from
-      // `RatioMA`/`RatioNOR`, which a fixed rate makes redundant.  README step 9.
+      // `RatioMA`/`RatioNOR`, which a fixed rate makes redundant.
       std::string lamePath = "lame";   ///< encoder to shell out to
 
 
