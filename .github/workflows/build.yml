@@ -1,0 +1,84 @@
+# Build and test k7zx on every push.
+#
+# The engine is what matters and it has no dependencies beyond a C++20 compiler
+# and CMake, so the headless job runs everywhere.  The GUI needs gtkmm-3.0, which
+# is packaged on the Linux images, so it gets its own job.  Nothing here needs
+# the network or a display.
+
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    name: core (no GUI)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: >
+          cmake -S . -B build
+          -DK7ZX_BUILD_GUI=OFF
+          -DK7ZX_WERROR=ON
+          -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+      # The self-test is about the window, so it is skipped here and run in the
+      # gui job below.  These are the ones that cover the conversion engine.
+      - name: Test (release build, as a user would get it)
+        run: ctest --test-dir build --output-on-failure
+
+  core-sanitizers:
+    name: core (ASan + UBSan)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: >
+          cmake -S . -B build
+          -DK7ZX_BUILD_GUI=OFF
+          -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -g"
+          -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address,undefined"
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+      # The readers take untrusted input and the renderers do a lot of pointer
+      # arithmetic into fixed buffers, so the suite is run under both sanitisers
+      # with leak detection on.  It takes a few minutes.
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+        env:
+          ASAN_OPTIONS: detect_leaks=1
+          UBSAN_OPTIONS: print_stacktrace=1
+
+  gui:
+    name: GUI and self-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gtkmm
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libgtkmm-3.0-dev pkg-config cmake g++ python3
+      - name: Configure
+        run: cmake -S . -B build -DK7ZX_WERROR=ON -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+      # The GUI's own self-test drives every control: it browses, converts,
+      # plays, batches, checks the layout is not clipped and re-reads the
+      # configuration round trip.  It needs a display, which is why it is here
+      # and not in the core job.  Xvfb provides one; the window is never shown
+      # to anyone.
+      - name: Install Xvfb
+        run: sudo apt-get install -y --no-install-recommends xvfb
+      - name: GUI self-test
+        run: xvfb-run -a ./build/k7zx --self-test tests/data/test.tap

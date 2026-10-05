@@ -1,0 +1,35 @@
+# Build directories
+build/
+build-*/
+
+# Conversion output.  Anything k7zx writes lands next to its input by default,
+# so these turn up in the working tree all the time; none of it is source.
+/*.wav
+/*.tzx
+/*.mp3
+*.wav
+*.tzx
+*.mp3
+
+# ...but tests/data/*.tzx is a hand-checked fixture (the TZX reader's input) and
+# is committed.  Only the container format is excepted, and only in that one
+# directory.
+!tests/data/*.tzx
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Editor and OS droppings
+*.swp
+*~
+.DS_Store
+.vscode/
+.idea/
+
+# The verification tools fetch their dependencies into build/ (see
+# tools/zxload/fetch.sh), so nothing else is needed for them -- but in case
+# anyone unpacks one in place:
+tools/zxload/third_party/
+tools/zxload/roms/
+tools/zxload/zxload

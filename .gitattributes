@@ -1,0 +1,31 @@
+# Normalise line endings in the repository, and check them out as LF.  The
+# original 1998 sources are the one exception: keep them exactly as they came
+# down, so a diff against upstream is a diff against upstream.
+* text=auto eol=lf
+
+original/** -text
+
+# The Rayo loader image is generated from the assembly by
+# tools/rayo/build_loader.py.  Committing it is deliberate -- the build must not
+# need sjasmplus -- but mark it so nobody hand-edits it.
+src/core/rayo_loader.inc linguist-generated=true
+
+# Binary fixtures and images: never let git try to diff or merge them.
+*.tap binary
+*.tzx binary
+*.sna binary
+*.z80  binary
+*.sbb binary
+*.hex binary
+*.wav binary
+*.mp3 binary
+
+# Nothing in this repository is executable except the scripts listed as such;
+# mark the common source types so a mode bit cannot turn up by accident.
+*.cpp text
+*.h   text
+*.inc text
+*.asm text
+*.py  text
+*.sh  text
+*.md  text

@@ -1,0 +1,472 @@
+{
+ "FSK 8.00": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "FSK 5.00": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "FSK 4.00": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "Fi 6.00": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   true
+  ]
+ ],
+ "Manchester 4.00": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "Shavings Slow 4.00": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   false
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "Shavings Delta 3.50": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   false
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "Shavings Raudo 2.75": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   false
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "Rayo 2.75": [
+  [
+   "perfect",
+   "clean",
+   true
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   true
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   true
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   false
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ],
+ "NPU 1.25": [
+  [
+   "perfect",
+   "clean",
+   false
+  ],
+  [
+   "MP3 320",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 320",
+   "modelled",
+   false
+  ],
+  [
+   "MP3 192",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 192",
+   "modelled",
+   false
+  ],
+  [
+   "MP3 128",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 128",
+   "modelled",
+   false
+  ],
+  [
+   "MP3 96",
+   "perfect",
+   false
+  ],
+  [
+   "MP3 96",
+   "modelled",
+   false
+  ]
+ ]
+}
