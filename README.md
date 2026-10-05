@@ -5,7 +5,7 @@ A ZX Spectrum tape-file-to-audio converter for Linux.
 `k7zx` turns a tape image (`.tap`, `.tzx`, `.sna`, `.z80`, `.sbb`, `.hex`) into
 a WAV file that a real Spectrum — or any standards-following emulator — will load.
 
-It is a rewrite of k7zx 4.3's conversion engine, and it is faithful to it:
+It is a rewrite of **Francisco Villa**'s k7zx 4.3's conversion engine, and it is faithful to it:
 **345 of the 354 conversions 4.3 offered produce a WAV byte-identical to the one
 4.3 itself writes**, checked mechanically against 4.3's own engine built from
 source. The nine exceptions are two deliberate divergences, described under
@@ -40,6 +40,7 @@ pick a technique, and per-speed reliability ratings.
 - [Verification](#verification)
 - [Development notes](#development-notes)
 - [Credits](#credits)
+- [Licence](#licence)
 
 ---
 
@@ -578,8 +579,22 @@ be diffed against.
 ## Credits
 
 k7zx was written by **Francisco Villa**, who also released the later **OTLA**
-tool. The algorithms, the Z80 loader routines and the UI layout are his work.
-The original source is preserved verbatim in `original/`, courtesy of the
+tool. The conversion algorithms, the Z80 loader routines and the UI layout are
+his work.
+
+Concretely, three things here are his rather than this port's:
+
+- **The Z80 loader routines**, carried byte for byte in
+  `src/core/loader_data.cpp` — 36 tables, 4,627 bytes of machine code. They are
+  patched in place at conversion time to encode the chosen timing, and nothing
+  here ever alters a loader byte except through the patch table the original
+  used.
+- **`original/`**, the complete 1998 sources, verbatim and unmodified.
+- **`original/asm/`**, the same routines as readable `.asm` listings.
+
+Everything else — the portable C++ core, the GTK 3 front end, the command line
+tool, the test suite, the verification tools, the documentation, and the Rayo
+loader — is this port's. The original source is from the
 [otla](https://github.com/sweetlilmre/otla) repository.
 
 The original's own About box adds:
@@ -594,3 +609,10 @@ Antonio Villena is the author of
 k7zx 5.0 is an independent reimplementation of k7zx 4.3's conversion engine for
 modern C++ on Linux, with a new GTK 3 front end, a command line tool, and the
 Rayo loader.
+
+## Licence
+
+MIT — see [LICENSE](LICENSE).
+
+This is a rewrite of **Francisco Villa's** k7zx 4.3, and it carries his Z80
+loader routines verbatim, as set out under [Credits](#credits).
